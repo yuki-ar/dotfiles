@@ -3,26 +3,17 @@
 "!!!!!!!!!!!!!!!!!!!!!!
 
 "実態は~/dotfile
+"もう間違えるんじゃあねぇぞ...
 
 "!!!!!!!!!!!!!!!!!!!!!!
 
-
-""" Vim-PLug core
 "*****************************************************************************
-if has('vim_starting')
-  set nocompatible               " Be iMproved
-endif
-
-let vimplug_exists=expand('~/.vim/autoload/plug.vim')
-
-let g:vim_bootstrap_langs = "html,javascript,ruby"
-let g:vim_bootstrap_editor = "vim"				" nvim or vim
-"バックアップファイルのディレクトリを指定する
+""original Configuration
+"*****************************************************************************
 set backupdir=$HOME/vimbackup
 "スワップファイル用のディレクトリを指定する
 set directory=$HOME/vimbackup
 nnoremap <silent><C-e> :NERDTreeToggle<CR>
-set ignorecase
 set mouse=a
 set expandtab
 set tabstop=2
@@ -41,6 +32,43 @@ nnoremap <S-i> :IndentGuidesEnable<CR>
 nnoremap <C-p> :CtrlP<CR>
 noremap <S-h>   ^
 noremap <S-l>   $
+
+"Plug 'simeji/winresizer'
+"Plug 'nathanaelkane/vim-indent-guides'
+"ruby補完
+"Plug 'prabirshrestha/async.vim'
+"Plug 'prabirshrestha/vim-lsp'
+"Plug 'prabirshrestha/asyncomplete.vim'
+"Plug 'prabirshrestha/asyncomplete-lsp.vim'
+"vim-lsp
+"
+"vim-lsp設定
+"
+let g:lsp_diagnostics_enabled = 1
+" debug
+let g:lsp_log_verbose = 1
+let g:lsp_log_file = expand('~/vim-lsp.log')
+let g:asyncomplete_log_file = expand('~/asyncomplete.log')
+"
+if executable('solargraph')
+	    au User lsp_setup call lsp#register_server({
+        \ 'name': 'solargraph',
+		\ 'cmd': {server_info->[&shell, &shellcmdflag, 'solargraph stdio']},
+		\ 'initialization_options': {"diagnostics": "true"},
+		\ 'whitelist': ['ruby'],
+        \ })
+endif
+
+""" Vim-PLug core
+"*****************************************************************************
+if has('vim_starting')
+  set nocompatible               " Be iMproved
+endif
+
+let vimplug_exists=expand('~/.vim/autoload/plug.vim')
+
+let g:vim_bootstrap_langs = "html,javascript,ruby"
+let g:vim_bootstrap_editor = "vim"				" nvim or vim
 
 let $NVIM_PYTHON_LOG_FILE="/tmp/nvim_log"
 let $NVIM_PYTHON_LOG_LEVEL="DEBUG"
@@ -86,63 +114,6 @@ Plug 'prabirshrestha/async.vim'
 Plug 'prabirshrestha/vim-lsp'
 Plug 'prabirshrestha/asyncomplete.vim'
 Plug 'prabirshrestha/asyncomplete-lsp.vim'
-"vim-lsp
-"
-"vim-lsp設定
-"
-let g:lsp_diagnostics_enabled = 1
-" debug
-let g:lsp_log_verbose = 1
-let g:lsp_log_file = expand('~/vim-lsp.log')
-let g:asyncomplete_log_file = expand('~/asyncomplete.log')
-"
-if executable('solargraph')
-	    au User lsp_setup call lsp#register_server({
-        \ 'name': 'solargraph',
-		\ 'cmd': {server_info->[&shell, &shellcmdflag, 'solargraph stdio']},
-		\ 'initialization_options': {"diagnostics": "true"},
-		\ 'whitelist': ['ruby'],
-        \ })
-endif
-
-
-"
-"if executable('solargraph')
-"    " gem install solargraph
-"    au User lsp_setup call lsp#register_server({
-"
-"endif
-"deoplete.nvim 
-"if has('nvim')
-"  Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
-"else
-"  Plug 'Shougo/deoplete.nvim'
-"  Plug 'roxma/nvim-yarp'
-"  Plug 'roxma/vim-hug-neovim-rpc'
-"endif
-"let g:deoplete#enable_at_startup = 1
-
-"LanguageClient-neovim
-"Plug 'autozimu/LanguageClient-neovim', {
-"    \ 'branch': 'next',
-"    \ 'do': 'bash install.sh',
-"    \ }
-
-" (Optional) Multi-entry selection UI.
-"Plug 'junegunn/fzf'
-
-"solargraphの設定
-"let g:deoplete#enable_at_startup = 1
-"let g:LanguageClient_serverCommands = {
-"    \ 'ruby': ['solargraph', 'socket'],
-"\}
-"call deoplete#custom#var('omni', 'input_patterns', {
-"    \ 'ruby': ['[^. *\t]\.\w*', '[a-zA-Z_]\w*::'],
-"\})
-"
-"let g:deoplete#sources#omni#input_patterns = {
-"\   "ruby" : '[^. *\t]\.\w*\|\h\w*::',
-"\}
 
 let g:make = 'gmake'
 if system('uname -o') =~ '^GNU/'
