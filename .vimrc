@@ -3,6 +3,7 @@ set expandtab
 set backspace=indent,eol,start
 set nocompatible
 set nowrap
+filetype plugin on
 noremap <C-l> z15l
 noremap <C-h> z15h
 set clipboard+=unnamed
@@ -37,7 +38,7 @@ set nobackup
 set noswapfile
 set fileformats=unix,dos,mac
 set showcmd
-set shell=/bin/sh
+set shell=/bin/bash
 " session management
 "let g:session_directory = "~/vimrc/session"
 let g:session_directory = "~/.vim/session"
@@ -88,9 +89,9 @@ let g:ctrlp_clear_cache_on_exit = 0
 " 遅延再描画
 let g:ctrlp_lazy_update = 1
 " CtrlPのウィンドウ最大高さ
-let g:ctrlp_max_height = 20
+let g:ctrlp_max_height = 30
 
-nnoremap <silent><C-e> :NERDTreeTabsToggle<CR>
+nnoremap <silent><C-e> :NERDTreeToggle<CR>
 let g:winresizer_start_key = '<C-T>'
 let g:indent_guides_enable_on_vim_startup = 1
 let g:indent_guides_guide_size = 1
@@ -224,7 +225,6 @@ endif
 "" Required:
 call plug#begin(expand('~/.vim/plugged'))
 Plug 'scrooloose/nerdtree'
-Plug 'jistr/vim-nerdtree-tabs'
 Plug 'tpope/vim-commentary'
 Plug 'ctrlpvim/ctrlp.vim'
 Plug 'vim-airline/vim-airline'
