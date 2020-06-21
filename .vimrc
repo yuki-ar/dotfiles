@@ -16,8 +16,8 @@ noremap <S-h>   ^
 noremap <S-l>   $
 set virtualedit=onemore
 inoremap {<Enter> {}<Left><CR><ESC><S-o>
-nnoremap j jzz
-nnoremap k kzz
+"nnoremap j jzz
+"nnoremap k kzz
 
 "*****************************************************************************
 "" Basic Setup
@@ -45,6 +45,8 @@ let g:session_directory = "~/.vim/session"
 let g:session_autoload = "no"
 let g:session_autosave = "no"
 let g:session_command_aliases = 1
+set wildignore+=log/**,tmp/**,vendor/**,.bundle/**,.git/**,node_modules/**
+let g:ctrlp_custom_ignore = 'node_modules\|DS_Store\|git'
 
 "*****************************************************************************
 "" Visual Settings
@@ -91,8 +93,8 @@ let g:ctrlp_lazy_update = 1
 " CtrlPのウィンドウ最大高さ
 let g:ctrlp_max_height = 30
 
-nnoremap <silent><C-e> :NERDTreeToggle<CR>
-let g:winresizer_start_key = '<C-T>'
+nnoremap <C-e> :NERDTreeToggle<CR>
+let g:winresizer_start_key = '<C-t>'
 let g:indent_guides_enable_on_vim_startup = 1
 let g:indent_guides_guide_size = 1
 let g:indentLine_faster = 1
