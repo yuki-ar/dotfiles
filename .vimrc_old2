@@ -1,43 +1,3 @@
-set autoread
-function! CheckChangeFile(checkFileChangeTime)
-  checktime
-endfunction
-let checkFileChangeTime = timer_start(3000, function("CheckChangeFile"), {"repeat": -1})
-
-"*****************************************************************************
-"leader setting
-""*****************************************************************************
-let mapleader = "\<space>"
-
-noremap <leader>ag :Ag 
-
-noremap <leader>w :w<CR>
-noremap <leader>wq :wq<CR>
-noremap <leader>q :q<CR>
-noremap <leader>q! :q!<CR>
-
-nnoremap <Leader>s" ciw""<Esc>P
-nnoremap <Leader>s' ciw''<Esc>P
-nnoremap <Leader>s` ciw``<Esc>P
-nnoremap <Leader>s( ciw()<Esc>P
-nnoremap <Leader>s{ ciw{}<Esc>P
-nnoremap <Leader>s[ ciw[]<Esc>P
-
-xnoremap <leader>s" di""<Esc>P
-xnoremap <Leader>s' di''<Esc>P
-xnoremap <Leader>s` di``<Esc>P
-xnoremap <Leader>s( di()<Esc>P
-xnoremap <Leader>s{ di{}<Esc>P
-xnoremap <Leader>s[ di[]<Esc>P
-
-"*****************************************************************************
-"" Basic Setup
-"*****************************************************************************"
-"特定の環境で起動時に謎文字が挿入＆Replaceモードでの起動となるため
-"https://github.com/vim-jp/issues/issues/578
-set t_u7=
-set t_RV=
-
 set mouse=a
 set expandtab
 set backspace=indent,eol,start
@@ -51,16 +11,16 @@ set hlsearch
 "検索結果のハイライトをEsc連打でクリアする
 nnoremap <ESC><ESC> :nohlsearch<CR>
 inoremap <silent> jj <ESC>
-inoremap <silent> っｊ <ESC>
 noremap <S-h>   ^
-noremap <S-l>   $l
+noremap <S-l>   $
 set virtualedit=onemore
 inoremap {<Enter> {}<Left><CR><ESC><S-o>
+"nnoremap j jzz
+"nnoremap k kzz
 
-"windows風コピペなど
-"windowsで矩形選択はCTRL+q
-source $VIMRUNTIME/mswin.vim
-
+"*****************************************************************************
+"" Basic Setup
+"*****************************************************************************"
 "" Encoding
 set encoding=utf-8
 set fileencoding=utf-8
@@ -68,7 +28,9 @@ set fileencodings=utf-8
 set hidden
 set incsearch
 set ignorecase
-set nobomb
+
+"" Encoding
+set bomb
 set ttyfast
 "" Directories for swp files
 set nobackup
@@ -83,24 +45,7 @@ let g:session_autoload = "no"
 let g:session_autosave = "no"
 let g:session_command_aliases = 1
 set wildignore+=log/**,tmp/**,vendor/**,.bundle/**,.git/**,node_modules/**
-
-"*****************************************************************************
-"ctrlp setting
-"****************************************************************************
 let g:ctrlp_custom_ignore = 'node_modules\|DS_Store\|git'
-let g:ctrlp_user_command = 'ag %s -l'
-
-let g:ctrlp_use_caching = 0
-if executable('ag')
-  set grepprg=ag\ --nogroup\ --nocolor
-
-  let g:ctrlp_user_command = 'ag %s -l --nocolor -g ""'
-else
-  let g:ctrlp_user_command = ['.git', 'cd %s && git ls-files . -co --exclude-standard', 'find %s -type f']
-  let g:ctrlp_prompt_mappings = {
-        \ 'AcceptSelection("e")': ['<space>', '<cr>', '<2-LeftMouse>'],
-        \ }
-endif
 
 "*****************************************************************************
 "" Visual Settings
@@ -117,14 +62,13 @@ set guioptions=egmrti
 set scrolloff=10
 set laststatus=2
 set title
-
-set statusline=%F%m%<%r%h%w%=(%{&ff}/%Y)\ (line\ %l\/%L,\ col\ %c)\
+set statusline=%F%m%r%h%w%=(%{&ff}/%Y)\ (line\ %l\/%L,\ col\ %c)\
 set wildignore+=*/tmp/*,*.so,*.swp,*.zip,*.pyc,*.db,*.sqlite
 augroup vimrc-remember-cursor-position
   autocmd!
   autocmd BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g`\"" | endif
 augroup END
-
+set autoread
 nnoremap <Tab> gt
 set shiftwidth=2
 set expandtab softtabstop=2 smartindent
@@ -299,8 +243,6 @@ Plug 'simeji/winresizer'
 Plug 'nathanaelkane/vim-indent-guides'
 Plug 'w0ng/vim-hybrid'
 Plug 'yuttie/comfortable-motion.vim'
-Plug 'rking/ag.vim'
-Plug 'tpope/vim-fugitive'
 
 " Plug 'Yggdroot/indentLine'
 Plug 'ConradIrwin/vim-bracketed-paste'
