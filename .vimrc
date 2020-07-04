@@ -3,6 +3,10 @@ function! CheckChangeFile(checkFileChangeTime)
   checktime
 endfunction
 let checkFileChangeTime = timer_start(3000, function("CheckChangeFile"), {"repeat": -1})
+"windows風コピペなど
+"windowsで矩形選択はCTRL+q
+nnoremap <C-q> <C-v>
+"map <C-q> <C-v>
 
 "*****************************************************************************
 "leader setting
@@ -39,7 +43,6 @@ xnoremap <Leader>s[ di[]<Esc>P
 "https://github.com/vim-jp/issues/issues/578
 set t_u7=
 set t_RV=
-
 set mouse=a
 set expandtab
 set backspace=indent,eol,start
@@ -61,9 +64,7 @@ noremap <S-l>   $l
 set virtualedit=onemore
 inoremap {<Enter> {}<Left><CR><ESC><S-o>
 
-"windows風コピペなど
-"windowsで矩形選択はCTRL+q
-source $VIMRUNTIME/mswin.vim
+
 
 "" Encoding
 set encoding=utf-8
