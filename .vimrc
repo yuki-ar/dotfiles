@@ -16,6 +16,7 @@ noremap <leader>wq :wq<CR>
 noremap <leader>q :q<CR>
 noremap <leader>q! :q!<CR>
 
+
 nnoremap <Leader>s" ciw""<Esc>P
 nnoremap <Leader>s' ciw''<Esc>P
 nnoremap <Leader>s` ciw``<Esc>P
@@ -23,6 +24,7 @@ nnoremap <Leader>s( ciw()<Esc>P
 nnoremap <Leader>s{ ciw{}<Esc>P
 nnoremap <Leader>s[ ciw[]<Esc>P
 
+"選択した文字を囲う
 xnoremap <leader>s" di""<Esc>P
 xnoremap <Leader>s' di''<Esc>P
 xnoremap <Leader>s` di``<Esc>P
@@ -43,6 +45,8 @@ set expandtab
 set backspace=indent,eol,start
 set nocompatible
 set nowrap
+"親ディレクトリにある.tagsを再帰的に探す
+set tags=.tags;
 filetype plugin on
 noremap <C-l> z15l
 noremap <C-h> z15h
@@ -89,6 +93,8 @@ set wildignore+=log/**,tmp/**,vendor/**,.bundle/**,.git/**,node_modules/**
 "****************************************************************************
 let g:ctrlp_custom_ignore = 'node_modules\|DS_Store\|git'
 let g:ctrlp_user_command = 'ag %s -l'
+"tmuxと被る
+"nnoremap <C-b> :CtrlPBuffer<cr>
 
 let g:ctrlp_use_caching = 0
 if executable('ag')
@@ -138,7 +144,7 @@ nnoremap <silent> <C-u> :call comfortable_motion#flick(-100)<CR>
 
 ""coc.nvim settign
 "*****************************************************************************
-nmap <silent> <c-]> <Plug>(coc-definition)
+"nmap <silent> <c-]> <Plug>(coc-definition)
 
 
 ""PlugSettings
@@ -154,6 +160,11 @@ let g:ctrlp_lazy_update = 1
 let g:ctrlp_max_height = 30
 
 nnoremap <C-e> :NERDTreeToggle<CR>
+
+"NERDTreeしか開かれてないときには自動的に閉じる
+autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && 
+      \ b:NERDTree.isTabTree()) | q | endif
+
 let g:winresizer_start_key = '<C-t>'
 let g:indent_guides_enable_on_vim_startup = 1
 let g:indent_guides_guide_size = 1
