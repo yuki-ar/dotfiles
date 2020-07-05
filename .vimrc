@@ -5,7 +5,7 @@ endfunction
 let checkFileChangeTime = timer_start(3000, function("CheckChangeFile"), {"repeat": -1})
 "windows風コピペなど
 "windowsで矩形選択はCTRL+q
-nnoremap <C-q> <C-v>
+"nnoremap <C-q> <C-v>
 "map <C-q> <C-v>
 
 "*****************************************************************************
@@ -53,7 +53,7 @@ set tags=.tags;
 filetype plugin on
 noremap <C-l> z15l
 noremap <C-h> z15h
-set clipboard+=unnamed
+set clipboard+=unnamedplus
 set hlsearch
 "検索結果のハイライトをEsc連打でクリアする
 nnoremap <ESC><ESC> :nohlsearch<CR>
@@ -63,8 +63,6 @@ noremap <S-h>   ^
 noremap <S-l>   $l
 set virtualedit=onemore
 inoremap {<Enter> {}<Left><CR><ESC><S-o>
-
-
 
 "" Encoding
 set encoding=utf-8
@@ -109,6 +107,34 @@ else
         \ }
 endif
 
+
+"*****************************************************************************
+""lsp-setting
+"if empty(globpath(&rtp, 'autoload/lsp.vim'))
+"  finish
+"endif
+
+function! s:on_lsp_buffer_enabled() abort
+  setlocal omnifunc=lsp#complete
+  setlocal signcolumn=yes
+  nmap <buffer> gd <plug>(lsp-definition)
+  nmap <buffer> <f2> <plug>(lsp-rename)
+  inoremap <expr> <cr> pumvisible() ? "\<c-y>\<cr>" : "\<cr>"
+endfunction
+
+augroup lsp_install
+  au!
+  autocmd User lsp_buffer_enabled call s:on_lsp_buffer_enabled()
+augroup END
+command! LspDebug let lsp_log_verbose=1 | let lsp_log_file = expand('~/lsp.log')
+
+let g:lsp_diagnostics_enabled = 1 "リアルタイムエラー
+let g:lsp_diagnostics_echo_cursor = 1
+let g:asyncomplete_auto_popup = 1 "自動入力保管
+let g:asyncomplete_auto_completeopt = 0 "自動入力保管
+let g:asyncomplete_popup_delay = 200
+let g:lsp_text_edit_enabled = 1 "lspのtexteditを有効
+
 "*****************************************************************************
 "" Visual Settings
 "*****************************************************************************
@@ -132,7 +158,8 @@ augroup vimrc-remember-cursor-position
   autocmd BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g`\"" | endif
 augroup END
 
-nnoremap <Tab> gt
+"ctrl-iとtabが同じなのでctrl-iでgtされてしまうためコメントアウト
+"nnoremap <Tab> gt
 set shiftwidth=2
 set expandtab softtabstop=2 smartindent
 let g:make = 'gmake'
@@ -313,6 +340,17 @@ Plug 'w0ng/vim-hybrid'
 Plug 'yuttie/comfortable-motion.vim'
 Plug 'rking/ag.vim'
 Plug 'tpope/vim-fugitive'
+
+"lsp-setting
+Plug 'prabirshrestha/async.vim'
+Plug 'prabirshrestha/asyncomplete.vim'
+Plug 'prabirshrestha/asyncomplete-lsp.vim'
+Plug 'prabirshrestha/vim-lsp'
+Plug 'mattn/vim-lsp-settings'
+Plug 'mattn/vim-lsp-icons'
+
+Plug 'hrsh7th/vim-vsnip'
+Plug 'hrsh7th/vim-vsnip-integ'
 
 " Plug 'Yggdroot/indentLine'
 Plug 'ConradIrwin/vim-bracketed-paste'
