@@ -167,8 +167,8 @@ if system('uname -o') =~ '^GNU/'
         let g:make = 'make'
 endif
 
-nnoremap <silent> <C-d> :call comfortable_motion#flick(100)<CR>
-nnoremap <silent> <C-u> :call comfortable_motion#flick(-100)<CR>
+"nnoremap <silent> <C-d> :call comfortable_motion#flick(100)<CR>
+"nnoremap <silent> <C-u> :call comfortable_motion#flick(-100)<CR>
 
 ""coc.nvim settign
 "*****************************************************************************
