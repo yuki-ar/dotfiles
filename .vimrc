@@ -43,17 +43,19 @@ xnoremap <Leader>s[ di[]<Esc>P
 "https://github.com/vim-jp/issues/issues/578
 set t_u7=
 set t_RV=
+
+set shell=zsh
 set mouse=a
 set expandtab
 set backspace=indent,eol,start
 set nocompatible
 set nowrap
 "親ディレクトリにある.tagsを再帰的に探す
-set tags=.tags;
+"set tags=.tags;
 filetype plugin on
 noremap <C-l> z15l
 noremap <C-h> z15h
-set clipboard+=unnamedplus
+set clipboard+=unnamed
 set hlsearch
 "検索結果のハイライトをEsc連打でクリアする
 nnoremap <ESC><ESC> :nohlsearch<CR>
@@ -78,7 +80,6 @@ set nobackup
 set noswapfile
 set fileformats=unix,dos,mac
 set showcmd
-set shell=/bin/bash
 " session management
 "let g:session_directory = "~/vimrc/session"
 let g:session_directory = "~/.vim/session"
@@ -128,9 +129,11 @@ augroup lsp_install
 augroup END
 command! LspDebug let lsp_log_verbose=1 | let lsp_log_file = expand('~/lsp.log')
 
+nmap <C-]> :LspDefinition<CR>
+
 let g:lsp_diagnostics_enabled = 1 "リアルタイムエラー
 let g:lsp_diagnostics_echo_cursor = 1
-let g:asyncomplete_auto_popup = 1 "自動入力保管
+let g:asyncomplete_auto_popup = 0 "自動入力保管
 let g:asyncomplete_auto_completeopt = 0 "自動入力保管
 let g:asyncomplete_popup_delay = 200
 let g:lsp_text_edit_enabled = 1 "lspのtexteditを有効
@@ -150,6 +153,7 @@ set guioptions=egmrti
 set scrolloff=10
 set laststatus=2
 set title
+set showtabline=2
 
 set statusline=%F%m%<%r%h%w%=(%{&ff}/%Y)\ (line\ %l\/%L,\ col\ %c)\
 set wildignore+=*/tmp/*,*.so,*.swp,*.zip,*.pyc,*.db,*.sqlite
@@ -160,8 +164,78 @@ augroup END
 
 "ctrl-iとtabが同じなのでctrl-iでgtされてしまうためコメントアウト
 "nnoremap <Tab> gt
+" Anywhere SID.
+function! s:SID_PREFIX()
+  return matchstr(expand('<sfile>'), '<SNR>\d\+_\zeSID_PREFIX$')
+endfunction
+
+" Set tabline.
+function! s:my_tabline()  "{{{
+  let s = ''
+  for i in range(1, tabpagenr('$'))
+    let bufnrs = tabpagebuflist(i)
+    let bufnr = bufnrs[tabpagewinnr(i) - 1]  " first window, first appears
+    let no = i  " display 0-origin tabpagenr.
+    let mod = getbufvar(bufnr, '&modified') ? '!' : ' '
+    let title = fnamemodify(bufname(bufnr), ':t')
+    let title = '[' . title . ']'
+    let s .= '%'.i.'T'
+    let s .= '%#' . (i == tabpagenr() ? 'TabLineSel' : 'TabLine') . '#'
+    let s .= no . ':' . title
+    let s .= mod
+    let s .= '%#TabLineFill# '
+  endfor
+  let s .= '%#TabLineFill#%T%=%#TabLine#'
+  return s
+endfunction "}}}
+let &tabline = '%!'. s:SID_PREFIX() . 'my_tabline()'
+set showtabline=2 " 常にタブラインを表示
+
+
+" The prefix key.
+nnoremap    [Tag]   <Nop>
+nmap    t [Tag]
+" Tab jump
+for n in range(1, 9)
+  execute 'nnoremap <silent> [Tag]'.n  ':<C-u>tabnext'.n.'<CR>'
+endfor
+" t1 で1番左のタブ、t2 で1番左から2番目のタブにジャンプ
+
+map <silent> [Tag]c :tablast <bar> tabnew<CR>
+" tc 新しいタブを一番右に作る
+map <silent> [Tag]x :tabclose<CR>
+" tx タブを閉じる
+map <silent> [Tag]n :tabnext<CR>
+" tn 次のタブ
+map <silent> [Tag]p :tabprevious<CR>
+" tp 前のタブ
+
+" インデント
 set shiftwidth=2
 set expandtab softtabstop=2 smartindent
+
+if has("autocmd")
+  "ファイルタイプの検索を有効にする
+  filetype plugin on
+  "ファイルタイプに合わせたインデントを利用
+  filetype indent on
+  "sw=softtabstop, sts=shiftwidth, ts=tabstop, et=expandtabの略
+  autocmd FileType c           setlocal sw=2 sts=2 ts=2 et
+  autocmd FileType html        setlocal sw=2 sts=2 ts=2 et
+  autocmd FileType ruby        setlocal sw=2 sts=2 ts=2 et
+  autocmd FileType js          setlocal sw=2 sts=2 ts=2 et
+  autocmd FileType zsh         setlocal sw=2 sts=2 ts=2 et
+  autocmd FileType python      setlocal sw=2 sts=2 ts=2 et
+  autocmd FileType scala       setlocal sw=2 sts=2 ts=2 et
+  autocmd FileType json        setlocal sw=2 sts=2 ts=2 et
+  autocmd FileType html        setlocal sw=2 sts=2 ts=2 et
+  autocmd FileType css         setlocal sw=2 sts=2 ts=2 et
+  autocmd FileType scss        setlocal sw=2 sts=2 ts=2 et
+  autocmd FileType sass        setlocal sw=2 sts=2 ts=2 et
+  autocmd FileType javascript  setlocal sw=4 sts=4 ts=4 et
+  autocmd FileType php         setlocal sw=4 sts=4 ts=4 et
+endif
+
 let g:make = 'gmake'
 if system('uname -o') =~ '^GNU/'
         let g:make = 'make'
@@ -187,11 +261,14 @@ let g:ctrlp_lazy_update = 1
 " CtrlPのウィンドウ最大高さ
 let g:ctrlp_max_height = 30
 
-nnoremap <C-e> :NERDTreeToggle<CR>
+nnoremap <leader>e :NERDTreeToggle<CR>
 
 "NERDTreeしか開かれてないときには自動的に閉じる
 autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && 
       \ b:NERDTree.isTabTree()) | q | endif
+
+"nerdtreeに開いているファイルを表示
+"autocmd BufEnter * if &modifiable | NERDTreeFind | wincmd p | endif
 
 let g:winresizer_start_key = '<C-t>'
 let g:indent_guides_enable_on_vim_startup = 1
@@ -211,7 +288,7 @@ let g:indentLine_conceallevel = 2
 let g:airline_theme = 'powerlineish'
 let g:airline#extensions#syntastic#enabled = 1
 let g:airline#extensions#branch#enabled = 1
-let g:airline#extensions#tabline#enabled = 1
+" let g:airline#extensions#tabline#enabled = 1
 let g:airline#extensions#tagbar#enabled = 1
 let g:airline_skip_empty_sections = 1
 " vim-airline
@@ -340,6 +417,9 @@ Plug 'w0ng/vim-hybrid'
 Plug 'yuttie/comfortable-motion.vim'
 Plug 'rking/ag.vim'
 Plug 'tpope/vim-fugitive'
+Plug 'itchyny/lightline.vim'
+Plug 'itchyny/vim-gitbranch'
+
 
 "lsp-setting
 Plug 'prabirshrestha/async.vim'
@@ -419,6 +499,18 @@ endif
 if &term =~ '256color'
   set t_ut=
 endif
+
+" タブラインの設定
+let g:lightline = {
+  \ 'tabline': {
+  \   'left': [['cwd'],['tabs']],
+  \   'right': [['close'], ['gitbranch']],
+  \},
+  \   'component_function':{
+  \     'cwd': 'getcwd',
+  \     'gitbranch': 'gitbranch#name',
+  \   },
+  \}
 
 
 
