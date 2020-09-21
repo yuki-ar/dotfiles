@@ -6,6 +6,9 @@ zstyle ':completion:*' matcher-list 'm:{a-z}={A-Z}'
 # emacsキーバインド
 bindkey -e
 
+# 履歴共有
+setopt share_history
+
 fpath=(~/.zsh $fpath)
  
 if [ -f ${HOME}/.zsh/git-completion.zsh ]; then
