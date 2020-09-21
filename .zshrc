@@ -37,5 +37,7 @@ local p_gitRepo=$(__git_ps1 " (%s)")\$
 setopt PROMPT_SUBST ; PS1='
 %{${fg[cyan]}%}%n@%m%{${reset_color}%}
 %{${fg[blue]}%}%~%{${reset_color}%}
-%{${fg[red]}%}$(__git_ps1 " (%s)")%{${reset_color}%} $ '
+%{${fg[red]}%}$(__git_ps1 " (%s)")%{${reset_color}%} 
+(·:ﾟдﾟ:·)ﾊｧﾊｧ
+$ '
 
