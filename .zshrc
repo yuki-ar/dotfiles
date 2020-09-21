@@ -9,6 +9,14 @@ bindkey -e
 # 履歴共有
 setopt share_history
 
+alias ls='ls -FG'
+alias be="bundle exec"
+
+export PATH="/usr/local/opt/mysql@5.6/bin:$PATH"
+export XDG_CONFIG_HOME=~/.config
+eval "$(pyenv init -)"
+eval "$(rbenv init -)"
+
 fpath=(~/.zsh $fpath)
  
 if [ -f ${HOME}/.zsh/git-completion.zsh ]; then
