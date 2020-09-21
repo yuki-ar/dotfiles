@@ -1,3 +1,4 @@
+
 set autoread
 function! CheckChangeFile(checkFileChangeTime)
   checktime
@@ -12,6 +13,11 @@ let checkFileChangeTime = timer_start(3000, function("CheckChangeFile"), {"repea
 "leader setting
 ""*****************************************************************************
 let mapleader = "\<space>"
+
+" vscodeで開く
+noremap <leader>code :! code %<CR>
+" phpstormで開く
+noremap <leader>ps :! pstorm %<CR>
 
 noremap <leader>ag :Ag 
 
